@@ -14,5 +14,6 @@ deploy:
   app: swarm-server-sails
   env: swarm-server-sails-pre
   bucket_name: elasticbeanstalk-us-east-1-146311686448
+  edge: true
   on:
     branch: master

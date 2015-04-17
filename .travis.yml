@@ -9,11 +9,10 @@ deploy:
   provider: elasticbeanstalk
   access_key_id: AKIAJDMCXKXIK7JPFNVA
   secret_access_key:
-    secure: "gjrXjza8FBLkD/+vbKluchXLz9tD/iJFfqN1UKF2BTbpITWEfF4xrB+DxlWPFqASR3mQ06eQtQin1oRoNo2mB+ZbvlAEfm0Ezw5VcjeRyMyJkhVDWHfF2c8P8dDq0LsIMWLbLLjfuSXZTI33b3rrf3C5IhK6PNnznR0NzMGd8Vg="
+    secure: "DyunMCiJDY0Aw1bifWaNjpp7Mn0cJ60Fh5ImvbOlw22KoU0VFLpjkvIhXW2zRn5P8HcbQ0sLKU3OK6JwHmzjPuORNiPc567DK23soDGpXo6MrIsZbhipSYiHUjiugYBAtZB4n39/JhSRGBDN9Hf4uy15PP0G5Hk0fWDt0AGJv3o="
   region: us-east-1
   app: swarm-server-sails
   env: swarm-server-sails-pre
   bucket_name: elasticbeanstalk-us-east-1-travisci-swarmsim-server-sails
-  edge: true
   on:
     branch: master

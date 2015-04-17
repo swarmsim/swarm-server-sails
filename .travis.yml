@@ -13,7 +13,7 @@ deploy:
   region: us-east-1
   app: swarm-server-sails
   env: swarm-server-sails-pre
-  bucket_name: elasticbeanstalk-us-east-1-146311686448
+  bucket_name: elasticbeanstalk-us-east-1-travisci-swarmsim-server-sails
   edge: true
   on:
     branch: master

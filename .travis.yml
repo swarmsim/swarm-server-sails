@@ -4,3 +4,15 @@ node_js:
 before_install:
   # for debugging travis, just in case
   - 'env'
+deploy:
+  # http://stackoverflow.com/questions/15918098/travis-ci-with-amazon-elastic-beanstalk
+  provider: elasticbeanstalk
+  access_key_id: AKIAJDMCXKXIK7JPFNVA
+  secret_access_key:
+    secure: "gjrXjza8FBLkD/+vbKluchXLz9tD/iJFfqN1UKF2BTbpITWEfF4xrB+DxlWPFqASR3mQ06eQtQin1oRoNo2mB+ZbvlAEfm0Ezw5VcjeRyMyJkhVDWHfF2c8P8dDq0LsIMWLbLLjfuSXZTI33b3rrf3C5IhK6PNnznR0NzMGd8Vg="
+  region: us-east-1
+  app: swarm-server-sails
+  env: swarm-server-sails-pre
+  bucket_name: elasticbeanstalk-us-east-1-146311686448
+  on:
+    branch: master

@@ -5,6 +5,7 @@
 
 moment = require 'moment'
 require 'moment-duration-format'
+os = require 'os'
 
 module.exports =
   healthy: (req, res) ->
@@ -19,3 +20,4 @@ module.exports =
       uptime: moment.duration(uptime, 'seconds').format()
       now: now
       approxStartDate: new Date now.getTime() - uptime * 1000
+      hostname: os.hostname()

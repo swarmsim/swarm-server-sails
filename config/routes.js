@@ -38,6 +38,8 @@ module.exports.routes = {
   //},
   '/whoami': 'User.whoami',
 
+  '/about': 'Misc.about',
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

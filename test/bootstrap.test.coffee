@@ -4,6 +4,8 @@ sails = null
 # no need to `require assert` in every test!
 global.assert = require 'assert'
 global.sinon = require 'sinon'
+global.request = require 'supertest'
+global.requestApp = -> request sails.hooks.http.app
 
 before (done) ->
   @timeout 10000

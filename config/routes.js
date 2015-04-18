@@ -32,13 +32,14 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': 'User.homepage', // == UserController.homepage
+  //'/': 'User.homepage', // == UserController.homepage
   //{
   //  view: 'homepage' // policies (like user session setup) don't run this way!
   //},
   '/whoami': 'User.whoami',
 
   '/about': 'Misc.about',
+  '/': 'Misc.about',
   '/healthy': 'Misc.healthy',
 
   /***************************************************************************

@@ -1,5 +1,5 @@
 v0.0.3: 2015/04/17
-* `/about` returns version and uptime.
+* `/about` and `/` return version and uptime.
 * `/healthy` verifies the server's online.
 * Fix expiration date for Kongregate save policy.
 

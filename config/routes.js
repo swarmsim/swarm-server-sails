@@ -39,6 +39,7 @@ module.exports.routes = {
   '/whoami': 'User.whoami',
 
   '/about': 'Misc.about',
+  '/healthy': 'Misc.healthy',
 
   /***************************************************************************
   *                                                                          *

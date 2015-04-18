@@ -4,7 +4,12 @@
  # @help        :: See http://links.sailsjs.org/docs/controllers
 
 module.exports =
-  about: ->
+  about: (req, res) ->
+    now = new Date()
+    uptime = process.uptime()
+    version = require('../../package.json').version
     res.json
-      version: require('./package.json').version
-      uptimeSeconds: process.uptime()
+      version: version
+      uptimeSeconds: uptime
+      now: now
+      #startDate: new Date now.getTime() - uptime * 1000

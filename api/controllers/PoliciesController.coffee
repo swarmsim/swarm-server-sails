@@ -63,6 +63,7 @@ module.exports =
           signature = crypto.createHmac('sha1', SECRETS.AWS_SECRET_ACCESS_KEY).update(new Buffer(doc64, 'utf-8')).digest 'base64'
           # construct response
           ret = {}
+          # 'Expires' is in seconds
           ret.get = s3.getSignedUrl 'getObject', Bucket: SECRETS.BUCKET, Key: key, Expires: expires_in
           ret.delete = s3.getSignedUrl 'deleteObject', Bucket: SECRETS.BUCKET, Key: key, Expires: expires_in
           ret.post =
@@ -74,16 +75,15 @@ module.exports =
               policy: doc64
               signature: signature
               "Content-type": "application/json"
-          ret.expires_in = expires_in
-          ret.server_date =
+          ret.expiresIn = expires_in
+          ret.serverDate =
             #refreshed: moment.utc().unix()
             refreshed: moment.utc().valueOf()
             expires: expires_date.valueOf()
-          res.type 'json'
-          res.send JSON.stringify ret
+          res.json ret
         else # !kongjson.success; invalid user
           res.status if (400 <= kongjson.error < 500) then 400 else 500
-          res.send JSON.stringify kongjson
+          res.json kongjson
           return
     .on 'error', (e) ->
       sails.log.error 'kongregate-auth error', e

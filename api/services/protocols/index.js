@@ -19,4 +19,5 @@ module.exports = {
 , bearer : require('./bearer')  
 , cas    : require('./cas')
 , kongregate : require('./kongregate')
+, guestuser: require('./guestuser')
 };

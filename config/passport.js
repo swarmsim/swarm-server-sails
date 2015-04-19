@@ -37,6 +37,11 @@ module.exports.passport = {
       apiKey: apiKey
     }
   },
+  guestuser: {
+    name: 'Guest User',
+    strategy: require('../lib/passport-guestuser/strategy'),
+    protocol: 'guestuser',
+  },
 
   //bearer: {
   //  strategy: require('passport-http-bearer').Strategy

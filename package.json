@@ -5,6 +5,7 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
+    "async": "^0.9.0",
     "aws-sdk": "^2.1.20",
     "bcryptjs": "^2.1.0",
     "client-sessions": "^0.7.0",
@@ -38,7 +39,8 @@
   "scripts": {
     "start": "node app.js",
     "pretest": "npm install",
-    "test": "PORT=1338 NODE_ENV=test CLIENT_SESSIONS_SECRET=test_`date` mocha",
+    "test": "PORT=1338 NODE_ENV=test CLIENT_SESSIONS_SECRET=test mocha",
+    "watch": "PORT=1338 NODE_ENV=test CLIENT_SESSIONS_SECRET=test mocha -R min --watch",
     "debug": "node debug app.js"
   },
   "main": "app.js",

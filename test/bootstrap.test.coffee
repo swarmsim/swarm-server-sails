@@ -15,18 +15,22 @@ global.requestApp = ->
 #   it 'does stuff', ->
 #     assert login.user.id
 #     login.agent.get ...
+global.register = (done=->) ->
+  rand = Math.floor Math.random() * 100000
+  ret = agent:requestApp()
+  ret.agent.post '/auth/local/register'
+  .send username: "test#{rand}", password: 'testtest', email: "test#{rand}@example.com"
+  .expect 200
+  .end (err, res) ->
+    if err then return done err
+    ret.user = res.body.user
+    assert ret.user.id
+    done()
+  return ret
 global.withLogin = (fnBefore=before, fnAfter=after) ->
-  ret = {}
+  ret = null
   fnBefore (done) ->
-    rand = Math.floor Math.random() * 100000
-    ret.agent = requestApp()
-    ret.agent.post '/auth/local/register'
-    .send username: "test#{rand}", password: 'testtest', email: "test#{rand}@example.com"
-    .end (err, res) ->
-      if err then return done err
-      ret.user = res.body.user
-      assert ret.user.id
-      done()
+    ret = register done
   fnAfter (done) ->
     User.destroy(id:ret.user.id).exec done
   return ret

@@ -1,13 +1,14 @@
-describe 'WithLoginHelper', ->
-  login = withLogin()
+describe 'LoginHelper', ->
+  before (done) =>
+    @login = register done
 
-  it 'logs in easy', (done) ->
-    assert login.user.id
-    login.agent.get '/whoami'
+  it 'logs in easy', (done) =>
+    assert @login.user.id
+    @login.agent.get '/whoami'
     .expect 200
-    .end (err, res) ->
+    .end (err, res) =>
       if err then return done err
-      assert.equal login.user.id, res.body.id
+      assert.equal @login.user.id, res.body.id
       done()
 
 describe 'AuthController', ->
@@ -20,7 +21,7 @@ describe 'AuthController', ->
       if err then return done err
       User.find().exec (err, users) ->
         if err then return done err
-        assert.equal 0, users.length
+        # length is checked later
 
         agent.post '/auth/local/register'
         .send username: 'test', password: 'testtest', email: 'test@example.com'

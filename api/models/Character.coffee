@@ -4,6 +4,8 @@
  # @docs        :: http://sailsjs.org/#!documentation/models
 
 module.exports =
+  schema: true
+
   attributes:
     user:
       model: 'user'
@@ -17,6 +19,7 @@ module.exports =
       required: true
     deleted:
       type: 'boolean'
+      required: true
       defaultsTo: false
     source:
       type: 'string'

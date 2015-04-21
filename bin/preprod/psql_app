@@ -1,0 +1,3 @@
+#!/bin/sh -eux
+cd "`dirname "$0"`/../.."
+./bin/shared/psql.sh secrets/preprod/env.sh

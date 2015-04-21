@@ -45,3 +45,8 @@ module.exports = {
   // }
 
 };
+
+// Allow sails-migrations to access the db without requiring it for the entire prod deployment.
+if (process.env.SAILS_MIGRATIONS) {
+  module.exports.models.connection = 'postgres';
+}

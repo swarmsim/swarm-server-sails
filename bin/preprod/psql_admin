@@ -1,0 +1,4 @@
+#!/bin/sh -eux
+cd "`dirname "$0"`/../.."
+# local-admin is not a mistake; preprod and dev/local use the same db server. (different dbs.)
+./bin/shared/psql.sh secrets/preprod/env.sh secrets/local/env_postgres_admin.sh

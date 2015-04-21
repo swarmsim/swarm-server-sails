@@ -29,7 +29,7 @@ module.exports.connections = {
     adapter: 'sails-disk'
   },
 
-  /** Postgres used in prod */
+  /** Postgres used in prod, and sometimes dev */
   postgres: {
     adapter: 'sails-postgresql',
     host: process.env.POSTGRES_HOST,

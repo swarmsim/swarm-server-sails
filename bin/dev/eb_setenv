@@ -1,0 +1,3 @@
+#!/bin/sh -eux
+cd "`dirname "$0"`/../.."
+eb setenv -e swarm-server-sails-dev `cat secrets/dev/env.sh`

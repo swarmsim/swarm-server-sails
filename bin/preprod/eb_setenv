@@ -1,4 +1,4 @@
 #!/bin/sh -eux
 cd "`dirname "$0"`/../.."
 . ./bin/shared/shared.sh
-eb setenv -e swarm-server-sails-pre `readenv secrets/preprod/env.sh`
+time eb setenv -e swarm-server-sails-pre `readenv secrets/preprod/env.sh`

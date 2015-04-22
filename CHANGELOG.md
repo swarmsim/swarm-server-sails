@@ -1,3 +1,6 @@
+v0.0.7: 2015/04/22
+* Kongregate online saves work again.
+
 v0.0.6: 2015/04/21
 * The database connection now requires SSL.
 

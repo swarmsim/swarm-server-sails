@@ -52,6 +52,10 @@ module.exports.policies = {
     healthy: true,
     '*': false
   },
+  Policies: {
+    create: true,
+    '*': false
+  },
   User: {
     findOne: true,
     populate: [ allowIf(function(req) {

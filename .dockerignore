@@ -1,0 +1,16 @@
+# obviously, because security. use --env-file on `docker run`
+secrets
+.secrets_key
+secrets.tar.enc
+
+# copying this screws with the build. build fresh.
+node_modules
+bower_components
+.tmp
+dump.rdb
+
+# Elastic Beanstalk Files
+.elasticbeanstalk
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

@@ -4,8 +4,8 @@ cache:
     - node_modules
 language: node_js
 node_js:
-  - '0.10'
-  - '0.12'
+  - 0.10
+  - 0.12
 before_install:
   # for debugging travis, just in case
   - 'env'
@@ -21,3 +21,4 @@ deploy:
   bucket_name: elasticbeanstalk-us-east-1-travisci-swarmsim-server-sails
   on:
     branch: master
+    node: 0.10

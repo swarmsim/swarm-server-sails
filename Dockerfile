@@ -8,6 +8,7 @@ RUN npm install -g npm
 COPY package.json /src/package.json
 RUN cd /src; npm install --production
 COPY . /src
-EXPOSE 1337
+ENV PORT=80
+EXPOSE 80
 WORKDIR /src
 CMD npm start

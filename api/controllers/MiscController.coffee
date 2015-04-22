@@ -30,7 +30,7 @@ module.exports =
         approxStartDate: new Date now.getTime() - uptime * 1000
         hostname: os.hostname()
         isDBUsingSSL: ssl_is_used
-    if ssl_is_used?
+    if ssl_is_used? or req.query.skip_db_ssl_check?
       return next()
     else
       # Any model works here, nothing special about user.

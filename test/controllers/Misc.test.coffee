@@ -8,7 +8,7 @@ describe 'MiscController', ->
       done err
 
   it 'shows /about info', (done) ->
-    requestApp().get '/about'
+    requestApp().get '/about?skip_db_ssl_check'
     .expect 'content-type', /json/
     .expect 200
     .end (err, res) ->
@@ -19,9 +19,9 @@ describe 'MiscController', ->
       done err
 
   it 'shows /about info at / too', (done) ->
-    requestApp().get '/'
+    requestApp().get '/?skip_db_ssl_check'
     .end (err, res) ->
-      requestApp().get '/about'
+      requestApp().get '/about?skip_db_ssl_check'
       .end (err, aboutRes) ->
         assert res.body.version
         assert.equal res.body.version, aboutRes.body.version

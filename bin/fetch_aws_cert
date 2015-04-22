@@ -1,0 +1,4 @@
+#!/bin/sh -eux
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts.General.SSL
+# Commit to source control so we know if it changes
+wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem -O config/rds-combined-ca-bundle.pem

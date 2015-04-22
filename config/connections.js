@@ -19,6 +19,9 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.connections.html
  */
 
+fs = require('fs');
+path = require('path');
+
 module.exports.connections = {
 
   /* Memory and disk are only for dev */
@@ -35,7 +38,12 @@ module.exports.connections = {
     host: process.env.POSTGRES_HOST,
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB
+    database: process.env.POSTGRES_DB,
+    //ssl: 'verify-full',
+    // https://github.com/brianc/node-postgres/issues/643
+    ssl: {
+      ca: [fs.readFileSync(path.resolve('./config/rds-combined-ca-bundle.pem'), 'ascii')],
+    },
   }
 
 

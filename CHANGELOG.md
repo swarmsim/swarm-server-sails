@@ -1,4 +1,7 @@
-v0.0.5: 2015/04/17
+v0.0.6: 2015/04/21
+* The database connection now requires SSL.
+
+~~v0.0.5: 2015/04/21~~
 * All database urls now check authorization; you can't edit someone else's characters.
 * Database operations enabled in production.
 

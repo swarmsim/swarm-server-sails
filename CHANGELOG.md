@@ -1,5 +1,6 @@
 v0.0.5: 2015/04/17
 * All database urls now check authorization; you can't edit someone else's characters.
+* Database operations enabled in production.
 
 v0.0.4: 2015/04/17
 * Include hostname in `/about`.

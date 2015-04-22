@@ -1,5 +1,5 @@
 #!/bin/sh -eux
 cd "`dirname "$0"`/../.."
 . ./bin/shared/shared.sh
-envfiles secrets/preprod/env.sh secrets/local/env_postgres_admin.sh
+exportenv secrets/preprod/env.sh secrets/local/env_postgres_admin.sh
 SAILS_MIGRATIONS=1 sails-migrations "$@"

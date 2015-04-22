@@ -11,24 +11,12 @@
  */
 
 module.exports = {
-  // Disable all database access in production until the db is ready. #584.
-  // http://stackoverflow.com/questions/26921889/disabling-default-sails-js-routes
-  policies: {
-    User: {
-      '*': false
-    },
-    Character: {
-      '*': false
-    },
-    Auth: {
-      '*': false
-    },
-  },
 
   models: {
     migrate: 'safe',
-    connection: 'localDiskDb'
   },
+
+  // Try not to hardcode stuff for production; instead use /secrets/prod/env.sh. Environment variable changes are easy and fast to release; code changes take longer.
 
   /***************************************************************************
    * Set the port in the production environment to 80                        *
@@ -47,6 +35,6 @@ module.exports = {
 };
 
 // Allow sails-migrations to access the db without requiring it for the entire prod deployment.
-if (process.env.SAILS_MIGRATIONS) {
+if (process.env.SAILS_MIGRATIONS && !process.env.DB_ADAPTER) {
   module.exports.models.connection = 'postgres';
 }

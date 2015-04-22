@@ -28,6 +28,7 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
   //migrate: 'alter'
+  connection: process.env.DB_ADAPTER,
   migrate: 'safe'
 
 };

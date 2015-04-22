@@ -2,9 +2,15 @@
 #
 # FOO=bar
 # BAZ='quux with spaces'
-# 
-# remove blank lines, then export the files as environment variables
-envfiles()
+#
+# remove blank lines and comments
+readenv()
 {
-  eval $(sed -e "/^$/d" -e "s/^/export /" "$@")
+  sed -e "/^$/d" -e "/^#.*$/d" "$@"
+}
+
+# remove blank lines and comments, then export the files as environment variables
+exportenv()
+{
+  eval $(readenv -e "s/^/export /" "$@")
 }

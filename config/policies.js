@@ -97,3 +97,10 @@ module.exports.policies = {
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
 };
+
+if (process.env.DISABLE_DB_OPERATIONS) {
+  // Disable all database access in production until the db is ready. #584.
+  // http://stackoverflow.com/questions/26921889/disabling-default-sails-js-routes
+  var mep = module.exports.policies;
+  mep.User = mep.Character = mep.Auth = {'*': false};
+}

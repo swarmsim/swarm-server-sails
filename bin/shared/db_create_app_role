@@ -1,0 +1,5 @@
+#!/bin/sh -eux
+cd "`dirname "$0"`/../.."
+ENV=$(basename "$(cd `dirname "$0"`; pwd)")
+. ./bin/shared/shared.sh
+env -i `readenv secrets/$ENV/env.sh` envsubst < db/create_app_role.template.sql | ./bin/$ENV/psql_admin

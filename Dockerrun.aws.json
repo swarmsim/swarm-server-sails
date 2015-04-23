@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "swarmsim/swarm-server-sails",
+    "Name": "swarmsim/swarm-server-sails"
   },
   "Ports": [
     {

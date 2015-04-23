@@ -1,3 +1,6 @@
+v0.0.8: 2015/04/23
+* Invisible infrastructure changes; things should run faster.
+
 v0.0.7: 2015/04/22
 * Kongregate online saves work again.
 

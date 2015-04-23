@@ -8,12 +8,14 @@ node_js:
 before_install:
   # for debugging travis, just in case
   - 'env'
+  # verify that secrets.tar.enc cannot be decrypted without the key (and that the key isn't committed!): decryption should fail
+  - './bin/decrypt_secrets && echo "Decrypted our secrets without the key?! Oops, time to change our passwords" || true'
 deploy:
   # http://stackoverflow.com/questions/15918098/travis-ci-with-amazon-elastic-beanstalk
   provider: elasticbeanstalk
-  access_key_id: AKIAJDMCXKXIK7JPFNVA
+  access_key_id: AKIAJTY2CDAZSKPJNNTQ
   secret_access_key:
-    secure: "DyunMCiJDY0Aw1bifWaNjpp7Mn0cJ60Fh5ImvbOlw22KoU0VFLpjkvIhXW2zRn5P8HcbQ0sLKU3OK6JwHmzjPuORNiPc567DK23soDGpXo6MrIsZbhipSYiHUjiugYBAtZB4n39/JhSRGBDN9Hf4uy15PP0G5Hk0fWDt0AGJv3o="
+    secure: "O7w+1MjgkfMGydqKzH+5gZn3Y+s6zEeGmmOlNVcoFUvKAfgmNkI9Nd4nIKhJCyz2I24u9KS5TcYnhB3IFjDlZt8AlVptJwwtqipxEWDJdP3w98qehsIfmy7dOCxwekduJYt4+LqubWsCWmGYZ3LnLyVNaFpdUfOAXuXZXilhKkM="
   region: us-east-1
   app: swarm-server-sails
   env: swarm-server-sails-pre

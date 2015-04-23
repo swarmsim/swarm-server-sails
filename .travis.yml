@@ -22,4 +22,3 @@ deploy:
   bucket_name: elasticbeanstalk-us-east-1-travisci-swarmsim-server-sails
   on:
     branch: master
-    node: 0.10

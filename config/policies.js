@@ -79,6 +79,11 @@ module.exports.policies = {
     update: [ 'passport', 'sessionAuth' ],
     '*': false
   },
+  Command: {
+    // user->character link is validated in the operation itself, just like character.update
+    create: [ 'passport', 'sessionAuth' ],
+    '*': false
+  },
 
   /***************************************************************************
   *                                                                          *

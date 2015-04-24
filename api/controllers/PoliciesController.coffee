@@ -27,6 +27,55 @@ jsonResponse = (res, callback) ->
   textResponse res, (body, res) ->
     callback JSON.parse body
 
+# Asynchronously migrate a legacy key, if necessary.
+# No need to send the user a response.
+migrateLegacyKey = (s3, key, legacykey) ->
+  # http://stackoverflow.com/questions/26726862/how-to-determine-if-object-exists-aws-s3-node-js-sdk
+  sails.log.debug 'migratelegacykey: checking modern save existence', key, legacykey
+  s3.headObject
+    Bucket: SECRETS.BUCKET
+    Key: key
+    (err, response) ->
+      if err?.code == 'NotFound'
+        sails.log.debug 'migratelegacykey: confirmed modern save does not exist. attempting to copy from legacy (which may or may not exist)', key, legacykey
+        s3.copyObject
+          Bucket: SECRETS.BUCKET
+          CopySource: "#{SECRETS.BUCKET}/#{legacykey}"
+          Key: key
+          (err, response) ->
+            if err?.code == 'NotFound'
+              sails.log.debug 'migratelegacykey: confirmed legacy key does not exist (and modern save does not exist). done.', key, legacykey
+            else if !err
+              sails.log.debug 'migratelegacykey: successfully copied from legacy to modern. attempting to delete legacy.', key, legacykey
+              s3.deleteObject
+                Bucket: SECRETS.BUCKET
+                Key: legacykey
+                (err, response) ->
+                  if err
+                    sails.log.warn 'migratelegacykey: failed to delete legacy save (freshly migrated). giving up.', err, key, legacykey
+                  else
+                    sails.log.debug 'migratelegacykey: deleted legacy save (freshly migrated). done.', key, legacykey
+            else
+              sails.log.warn 'migratelegacykey: failed to copy legacy save to modern save. giving up.', err, key, legacykey
+      else if !err
+        # modern save exists (the common case). we could try to delete the legacy save now.
+        # but... I'm paranoid. Let's wait a bit first.
+        sails.log.debug 'migratelegacykey: confirmed modern save exists. attempting to delete legacy (actually, no deletes yet).', key, legacykey
+        # Don't delete just yet. This'll make deleteSave misbehave, but no one ever uses it anyway.
+        #s3.deleteObject
+        #  Bucket: SECRETS.BUCKET
+        #  Key: legacykey
+        #  (err, response) ->
+        #    if err?.code == 'NotFound'
+        #      # Looks like this never happens. Keep it around to distinguish from other errors, just in case.
+        #      sails.log.debug 'migratelegacykey: confirmed legacy key does not exist (preexisting modern save). done.', key, legacykey
+        #    else if !err
+        #      sails.log.debug 'migratelegacykey: deleted legacy save (preexisting modern save). done.', key, legacykey
+        #    else
+        #      sails.log.warn 'migratelegacykey: failed to delete legacy save (preexisting modern save). giving up.', err, key, legacykey
+      else
+        sails.log.debug 'migratelegacykey: error checking for modern save existence. giving up.', err, key, legacykey
+
 module.exports =
   create: (req, res) ->
     req.checkBody('policy.user_id').notEmpty().isInt()
@@ -46,7 +95,12 @@ module.exports =
           # http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-examples.html
           s3 = new aws.S3()
           # TODO hash auth_token? this will go away soon anyway
-          key = "saves/#{policy.game_auth_token}_#{policy.user_id}.json"
+          #legacykey = "saves/#{policy.game_auth_token}_#{policy.user_id}.json"
+          # Nope, don't store auth token at all! See https://github.com/swarmsim/swarm/issues/624 - auth tokens can change.
+          # saves2/ to distinguish legacy saves from modern saves by prefix, for easy listing.
+          key = "saves2/#{policy.user_id}.json"
+          migrateLegacyKey s3, key, "saves/#{policy.game_auth_token}_#{policy.user_id}.json"
+
           expires_in = 60 * 60 * 24 * 1
           expires_date = moment.utc().add expires_in, 'seconds'
           doc =

@@ -43,7 +43,7 @@ migrateLegacyKey = (s3, key, legacykey) ->
           CopySource: "#{SECRETS.BUCKET}/#{legacykey}"
           Key: key
           (err, response) ->
-            if err?.code == 'NotFound'
+            if err?.code == 'NotFound' or err?.code == 'NoSuchKey'
               sails.log.debug 'migratelegacykey: confirmed legacy key does not exist (and modern save does not exist). done.', key, legacykey
             else if !err
               sails.log.debug 'migratelegacykey: successfully copied from legacy to modern. attempting to delete legacy.', key, legacykey

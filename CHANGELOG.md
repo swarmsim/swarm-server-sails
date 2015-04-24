@@ -1,3 +1,6 @@
+v0.0.9: 2015/04/23
+* Stop using Kongregate auth tokens in save keys. (It'll take a day or two for permissions to expire.)
+
 v0.0.8: 2015/04/23
 * Invisible infrastructure changes; things should run faster.
 

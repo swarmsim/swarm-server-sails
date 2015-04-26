@@ -1,4 +1,4 @@
-v0.0.10: 2015/04/24
+v0.0.10: 2015/04/26
 * Kongregate save migrations for players with no save are quieter.
 * DB connection pooling.
 * Save commands (clicks that affect game state). Lots more traffic.

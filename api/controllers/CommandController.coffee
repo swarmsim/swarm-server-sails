@@ -29,6 +29,8 @@ module.exports =
     req.checkBody('character').notEmpty().isInt()
     req.checkBody('state').notEmpty()
     req.checkBody('body').notEmpty()
+    if (errors=req.validationErrors())
+      return res.status(400).json errors:errors
     charId = req.body.character
     state = req.body.state
     commandBody = req.body.body
@@ -44,7 +46,8 @@ module.exports =
         # will be updated but the command that updated it won't exist.
         Command.create {character:charId, body:commandBody}
         .exec withErrorHandler res, 'create command', (err, command) ->
-          return res.json {command: command.id, state: characters[0].state}
+          #return res.json {command: command.id, state: characters[0].state}
+          return res.json {command: {id:command.id}}
 
       else
         # character update updated nothing. extra query to determine why: does the character not exist, or is it not ours?

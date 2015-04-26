@@ -81,8 +81,7 @@ module.exports =
     req.checkBody('policy.user_id').notEmpty().isInt()
     req.checkBody('policy.game_auth_token').notEmpty()
     if (errors=req.validationErrors())
-      res.send JSON.stringify(errors:errors), 400
-      return
+      return res.status(400).json errors:errors
     policy = req.body.policy
     kong_args = {user_id:policy.user_id, game_auth_token:policy.game_auth_token, api_key:SECRETS.KONGREGATE_API_KEY}
     kong_url = "https://api.kongregate.com/api/authenticate.json?#{querystring.stringify kong_args}"

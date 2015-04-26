@@ -7,6 +7,8 @@ assert = require 'assert'
 module.exports =
   update: (req, res) ->
     req.checkParams('id').notEmpty().isInt()
+    if (errors=req.validationErrors())
+      return res.status(400).json errors:errors
     Character.update {id:req.params.id, user:req.user.id}, req.body
     .exec (err, characters) ->
       if err then return res.status(500).json error:err

@@ -41,13 +41,15 @@ module.exports =
     .exec withErrorHandler res, 'update character', (err, characters) ->
       assert characters.length <= 1, 'multiple characters updated?!'
       if characters.length == 1
+        # Don't write the command log for now - hits the db too hard.
+        return res.json {command: {}}
         # No transaction support? Seriously???
         # No transaction support means that, if this fails, character state
         # will be updated but the command that updated it won't exist.
-        Command.create {character:charId, body:commandBody}
-        .exec withErrorHandler res, 'create command', (err, command) ->
-          #return res.json {command: command.id, state: characters[0].state}
-          return res.json {command: {id:command.id}}
+        #Command.create {character:charId, body:commandBody}
+        #.exec withErrorHandler res, 'create command', (err, command) ->
+        #  #return res.json {command: command.id, state: characters[0].state}
+        #  return res.json {command: {id:command.id}}
 
       else
         # character update updated nothing. extra query to determine why: does the character not exist, or is it not ours?

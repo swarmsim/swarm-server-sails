@@ -1,0 +1,5 @@
+#!/bin/sh -eux
+cd "`dirname "$0"`/.."
+. ./bin/shared/shared.sh
+./bin/dev/sails-migrations generate "$@"
+rename 's/\.js$/\.coffee/' db/migrations/*.js

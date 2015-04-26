@@ -1,5 +1,7 @@
 v0.0.10: 2015/04/24
 * Kongregate save migrations for players with no save are quieter.
+* DB connection pooling.
+* Save commands (clicks that affect game state). Lots more traffic.
 
 v0.0.9: 2015/04/23
 * Stop using Kongregate auth tokens in save keys. (It'll take a day or two for permissions to expire.)

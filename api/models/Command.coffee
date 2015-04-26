@@ -4,5 +4,12 @@
  # @docs        :: http://sailsjs.org/#!documentation/models
 
 module.exports =
+  schema: true
 
-  attributes: {}
+  attributes:
+    character:
+      model: 'character'
+      required: true
+    body:
+      type: 'json'
+      required: true

@@ -39,6 +39,7 @@ module.exports.connections = {
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
+    pool: true,
     //ssl: 'verify-full',
     // https://github.com/brianc/node-postgres/issues/643
     ssl: {

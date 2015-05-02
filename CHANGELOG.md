@@ -1,3 +1,10 @@
+v0.0.12: 2015/05/01
+* quieter logs
+
+v0.0.11: 2015/04/26
+* validation errors
+* don't insert commands for now
+
 v0.0.10: 2015/04/26
 * Kongregate save migrations for players with no save are quieter.
 * DB connection pooling.

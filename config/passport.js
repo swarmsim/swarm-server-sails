@@ -14,16 +14,6 @@
  * http://passportjs.org/guide/providers/
  */
 
-var apiKey = process.env.KONGREGATE_API_KEY;
-if (!apiKey) {
-  if (process.env.NODE_ENV == 'test') {
-    apiKey = '';
-  }
-  else {
-    throw new Error('KONGREGATE_API_KEY env var required');
-  }
-}
-
 module.exports.passport = {
   local: {
     strategy: require('passport-local').Strategy
@@ -33,8 +23,7 @@ module.exports.passport = {
     strategy: require('../lib/passport-kongregate/strategy'),
     protocol: 'kongregate',
     options: {
-      // TODO remove default, it's there for tests
-      apiKey: apiKey
+      apiKey: process.env.KONGREGATE_API_KEY,
     }
   },
   guestuser: {

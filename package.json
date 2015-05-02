@@ -42,8 +42,8 @@
   "scripts": {
     "start": "forever app.js",
     "pretest": "npm install",
-    "test": "PORT=1338 NODE_ENV=test CLIENT_SESSIONS_SECRET=test mocha",
-    "watch": "PORT=1338 NODE_ENV=test CLIENT_SESSIONS_SECRET=test mocha -R min --watch",
+    "test": "mocha",
+    "watch": "mocha -R min --watch",
     "debug": "node debug app.js"
   },
   "main": "app.js",
@@ -54,6 +54,7 @@
   "author": "erosson",
   "license": "",
   "devDependencies": {
+    "dotenv": "^1.1.0",
     "mocha": "~2.2.1",
     "sails-generate-auth": "^0.3.0",
     "sails-memory": "^0.10.3",

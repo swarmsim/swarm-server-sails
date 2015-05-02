@@ -1,3 +1,4 @@
+require('dotenv').config path:'test/test.env'
 Sails = new require('sails').Sails()
 sails = null
 

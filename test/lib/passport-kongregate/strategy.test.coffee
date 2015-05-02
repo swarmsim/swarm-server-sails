@@ -51,3 +51,18 @@ describe 'kongregate passport', ->
         user_id: 111
         game_auth_token: 'token'
       @strategy.authenticate req
+
+  it 'fails for GET requests', (done) =>
+    @user = {}
+    @https =
+      get: sinon.spy (url, cb) =>
+        assert false
+    @protocol = sinon.spy (req, creds, profile, cb) =>
+      assert false
+    @strategy = new Strategy {apiKey: 'thekey', https: @https}, @protocol
+    @strategy.success = @strategy.error = sinon.stub().throws()
+    @strategy.fail = =>
+      done()
+    stubreq (req) =>
+      delete req.body
+      @strategy.authenticate req

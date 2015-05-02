@@ -28,11 +28,13 @@ module.exports = class Strategy extends passport.Strategy
     super()
 
   authenticate: (req, options={}) ->
+    params = req.body
+    if !params?
+      return @fail {}, 404
     req.checkBody('user_id').notEmpty().isInt()
     req.checkBody('game_auth_token').notEmpty()
-    params = req.body
     if (errors=req.validationErrors())
-      @fail {errors:errors}, 400
+      return @fail {errors:errors}, 400
     creds = {user_id:params.user_id, game_auth_token:params.game_auth_token}
     kong_args = _.extend {api_key:@options.apiKey}, creds
     sails.log.debug 'kongregate auth', kong_args

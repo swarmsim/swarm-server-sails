@@ -173,7 +173,7 @@ var AuthController = {
         if (!req.accepted.length || req.accepted.some(function(type){ return /json/i.test(type.value); })) {
           return res.json({success:true, user:req.user});
         }
-        res.redirect('/');
+        res.redirect('/login-done.html');
       });
     });
   },

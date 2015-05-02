@@ -78,15 +78,16 @@ module.exports.passport = {
   //  }
   //},
 
-  //google: {
-  //  name: 'Google',
-  //  protocol: 'oauth2',
-  //  strategy: require('passport-google-oauth').OAuth2Strategy,
-  //  options: {
-  //    clientID: 'your-client-id',
-  //    clientSecret: 'your-client-secret'
-  //  }
-  //},
+  google: {
+    name: 'Google',
+    protocol: 'oauth2',
+    strategy: require('passport-google-oauth').OAuth2Strategy,
+    options: {
+      clientID: process.env.GOOGLE_OAUTH_ID,
+      clientSecret: process.env.GOOGLE_OAUTH_SECRET,
+      scope: ['email'],
+    }
+  },
 
   //cas: {
   //  name: 'CAS',

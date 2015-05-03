@@ -2,4 +2,4 @@
 # Dropbox oauth is a pain - either you need https, or you need localhost. Dev SSL is a pain to set up, though.
 cd "`dirname "$0"`/../.."
 . ./bin/shared/shared.sh
-env -i `readenv secrets/local/env.sh` BASEURL=http://localhost node_modules/forever/bin/forever -w app.js
+env -i `readenv secrets/local/env.sh` PROXYHOST=http://localhost node_modules/forever/bin/forever -w app.js

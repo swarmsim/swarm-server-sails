@@ -11,7 +11,8 @@
  */
 
 module.exports = {
-  proxyHost: process.env.BASEURL,
+  proxyHost: process.env.PROXYHOST,
+  proxyPort: process.env.PROXYPORT,
 
   /***************************************************************************
    * Set the default database connection for models in the development       *

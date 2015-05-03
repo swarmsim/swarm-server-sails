@@ -11,7 +11,8 @@
  */
 
 module.exports = {
-  proxyHost: process.env.BASEURL,
+  proxyHost: process.env.PROXYHOST,
+  proxyPort: process.env.PROXYPORT,
 
   models: {
     migrate: 'safe',

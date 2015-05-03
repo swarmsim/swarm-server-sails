@@ -78,6 +78,16 @@ module.exports.passport = {
     }
   },
 
+  'dropbox-oauth2': {
+    name: 'Dropbox',
+    protocol: 'oauth2',
+    strategy: require('passport-dropbox-oauth2').Strategy,
+    options: {
+      clientID: process.env.DROPBOX_OAUTH_ID,
+      clientSecret: process.env.DROPBOX_OAUTH_SECRET,
+    }
+  },
+
   //cas: {
   //  name: 'CAS',
   //  protocol: 'cas',

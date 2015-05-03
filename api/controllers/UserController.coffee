@@ -10,7 +10,7 @@ module.exports =
     if not req.user?.id?
       return res.status(404).json {}
     sails.log.debug req.user
-    User.findOne(req.user.id).populate('characters').exec (err, user) ->
+    User.findOne(req.user.id).populate('characters', sort: 'updatedAt DESC').exec (err, user) ->
       if err
         return res.render {error:true, message:err}, 500
       if not user

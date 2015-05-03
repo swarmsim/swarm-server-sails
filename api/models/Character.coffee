@@ -14,6 +14,7 @@ module.exports =
       type: 'string'
       size: 20
       required: true
+      defaultsTo: 'Unnamed Swarm'
     state:
       type: 'json'
       required: true
@@ -23,7 +24,7 @@ module.exports =
       defaultsTo: false
     source:
       type: 'string'
-      enum: ['unspecified', 'connectLegacy']
+      enum: ['unspecified', 'connectLegacy', 'guestFirst']
       size: 20
       defaultsTo: 'unspecified'
       required: true

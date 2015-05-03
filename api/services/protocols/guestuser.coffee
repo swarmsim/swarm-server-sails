@@ -2,7 +2,15 @@
 
 createUser = (done) ->
   User.create username: null, email: null
-  .exec done
+  .exec (err, user) ->
+    if err or not user
+      return done err, user
+    # Create a default character too. Client will populate its state.
+    Character.create user:user, state: {}, source: 'guestFirst'
+    .exec (err, character) ->
+      if err or not character
+        return done err, character
+      done err, user
 
 module.exports = (req, done) ->
   # maybe they're already authenticated?

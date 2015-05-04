@@ -21,3 +21,9 @@ module.exports =
     characters:
       collection: 'character'
       via: 'user'
+    role:
+      type: 'string'
+      enum: ['user', 'admin']
+      size: 20
+      defaultsTo: 'user'
+      required: true

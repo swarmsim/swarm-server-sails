@@ -8,6 +8,11 @@ describe 'UserController', ->
     .send id: @login.user.id, username: 'dsfargeg'
     .expect 200
     .end done
+  it "can't edit role (isadmin)", (done) =>
+    @login.agent.post "/user/#{@login.user.id}"
+    .send id: @login.user.id, role: 'admin'
+    .expect 403
+    .end done
   it "can't edit others", (done) =>
     @login.agent.post "/user/#{@login2.user.id}"
     .send id: @login.user.id, username: 'dsfargeg2'

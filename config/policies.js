@@ -67,7 +67,9 @@ module.exports.policies = {
     })],
     // we could allow add/remove character operations here, but it's so much easier to use /character
     whoami: [ 'passport' ],
-    update: [ 'passport', allowIf.isMyUser ],
+    update: [ 'passport', allowIf.isMyUser, allowIf(function(req) {
+      return req.body && !req.body.hasOwnProperty('role');
+    }) ],
     '*': false
   },
   Character: {

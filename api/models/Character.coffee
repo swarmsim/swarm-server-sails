@@ -24,7 +24,7 @@ module.exports =
       defaultsTo: false
     source:
       type: 'string'
-      enum: ['unspecified', 'connectLegacy', 'guestFirst']
+      enum: ['unspecified', 'connectLegacy', 'guestFirst', 'newCharForm']
       size: 20
       defaultsTo: 'unspecified'
       required: true

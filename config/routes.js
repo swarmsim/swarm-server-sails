@@ -36,11 +36,12 @@ module.exports.routes = {
   //{
   //  view: 'homepage' // policies (like user session setup) don't run this way!
   //},
-  '/whoami': 'User.whoami',
+  'get /whoami': 'User.whoami',
 
-  '/about': 'Misc.about',
-  '/': 'Misc.about',
-  '/healthy': 'Misc.healthy',
+  'get /about': 'Misc.about',
+  'get /admin': 'Misc.admin',
+  'get /': 'Misc.about',
+  'get /healthy': 'Misc.healthy',
 
   /***************************************************************************
   *                                                                          *

@@ -1,3 +1,8 @@
+v0.0.14: 2015/05/03
+* google, dropbox logins
+* admin users
+* admin stats at /admin
+
 v0.0.12: 2015/05/01
 * quieter logs
 

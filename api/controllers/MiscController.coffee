@@ -43,3 +43,25 @@ module.exports =
         sails.log.debug 'db ssl_is_used()', ssl_is_used#, results
         return next()
 
+  admin: (req, res) ->
+    User.query """
+select
+  -- counts for most interesting tables
+  (select count(*) from "user") as user_count,
+  (select count(*) from "user" where "createdAt" >= NOW() - '1 day'::INTERVAL) as users_created_24h,
+  (select count(*) from "user" where "updatedAt" >= NOW() - '1 day'::INTERVAL) as users_updated_24h,
+  (select count(*) from "character") as character_count,
+  (select count(*) from "character" where "createdAt" >= NOW() - '1 day'::INTERVAL) as characters_created_24h,
+  (select count(*) from "character" where "updatedAt" >= NOW() - '1 day'::INTERVAL) as characters_updated_24h,
+  (select count(*) from "command") as command_count,
+  (select count(*) from "command" where "createdAt" >= NOW() - '1 day'::INTERVAL) as commands_created_24h,
+  (select count(*) from "command" where "updatedAt" >= NOW() - '1 day'::INTERVAL) as commands_updated_24h,
+  -- TODO: non-guest user count, users-with-no-characters count
+
+  (select count(*) from "user" where role='admin') as admin_user_count,
+  '' as eol;
+""", (err, results) =>
+      if err or results?.rowCount != 1
+        sails.log.error 'error selecting admin stats from db', err, results?.rowCount
+        return res.status(500).json error:true, message:"Database error"
+      return res.json results.rows[0]

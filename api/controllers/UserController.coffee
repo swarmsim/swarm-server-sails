@@ -12,7 +12,8 @@ module.exports =
     sails.log.debug req.user
     User.findOne(req.user.id).populate('characters', sort: 'updatedAt DESC').exec (err, user) ->
       if err
-        return res.render {error:true, message:err}, 500
+        sails.log.error 'whoami failed', err
+        return res.status(500).json error:true, message: "Database error"
       if not user
         return res.status(404).json {}
       return res.json user

@@ -32,6 +32,18 @@ allowIf.isMyCharacter = allowIf(function(req) {
   return req.session.authenticated && (!req.body.hasOwnProperty('user') || req.body.user == req.user.id);
 });
 
+function isAdmin(req, res, next) {
+  User.findOne({id:req.user.id}).exec(function(err, user) {
+    if (err) {
+      return res.status(500).json({error:true, message:"Database error (isAdmin)"});
+    }
+    if (!user || user.role != 'admin') {
+      return res.forbidden();
+    }
+    return next();
+  });
+}
+
 module.exports.policies = {
 
   /***************************************************************************
@@ -50,6 +62,7 @@ module.exports.policies = {
   Misc: {
     about: true,
     healthy: true,
+    admin: [ 'passport', 'sessionAuth', isAdmin ],
     '*': false
   },
   Policies: {

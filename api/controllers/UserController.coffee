@@ -17,3 +17,11 @@ module.exports =
       if not user
         return res.status(404).json {}
       return res.json user
+  findOne: (req, res) ->
+    User.findOne(req.params.id).populate('characters', sort: 'updatedAt DESC').exec (err, user) ->
+      if err
+        sails.log.error 'get user failed', err
+        return res.status(500).json error:true, message: "Database error"
+      if not user
+        return res.status(404).json {}
+      return res.json user

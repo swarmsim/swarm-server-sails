@@ -10,7 +10,7 @@ module.exports =
     if not req.user?.id?
       return res.status(404).json {}
     sails.log.debug req.user
-    User.findOne(req.user.id).populate('characters', sort: 'updatedAt DESC').exec (err, user) ->
+    User.findOne(req.user.id).populate('characters', deleted: false, sort: 'updatedAt DESC').exec (err, user) ->
       if err
         sails.log.error 'whoami failed', err
         return res.status(500).json error:true, message: "Database error"
@@ -18,7 +18,7 @@ module.exports =
         return res.status(404).json {}
       return res.json user
   findOne: (req, res) ->
-    User.findOne(req.params.id).populate('characters', sort: 'updatedAt DESC').exec (err, user) ->
+    User.findOne(req.params.id).populate('characters', deleted: false, sort: 'updatedAt DESC').exec (err, user) ->
       if err
         sails.log.error 'get user failed', err
         return res.status(500).json error:true, message: "Database error"

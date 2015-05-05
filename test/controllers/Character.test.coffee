@@ -2,7 +2,7 @@ describe 'CharacterController', ->
   before (done) =>
     @login = register =>
       @login2 = register =>
-        Character.create user:@login.user.id, name: 'grez', state: {}
+        Character.create user:@login.user.id, name: 'grez', league: 'open', state: {}
         .exec (err, character) =>
           if err then return done err
           @login.character = character
@@ -61,3 +61,7 @@ describe 'CharacterController', ->
     @login.agent.post "/character/#{@login.character.id}"
     .send name: 'sdinaryt'
     .expect 200, done
+  it "can't update self league", (done) =>
+    @login.agent.post "/character/#{@login.character.id}"
+    .send league: 'temp1'
+    .expect 403, done

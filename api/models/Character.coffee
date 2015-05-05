@@ -28,6 +28,12 @@ module.exports =
       size: 20
       defaultsTo: 'unspecified'
       required: true
+    league:
+      type: 'string'
+      enum: ['open', 'temp1']
+      size: 20
+      defaultsTo: 'open'
+      required: true
     # TODO
     #commands:
     #  collection: 'command'

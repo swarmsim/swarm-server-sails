@@ -31,6 +31,11 @@ allowIf.isMyCharacter = allowIf(function(req) {
   // allow a null user too. create will fail, update/delete won't change it
   return req.session.authenticated && (!req.body.hasOwnProperty('user') || req.body.user == req.user.id);
 });
+allowIf.hasBodyWithoutField = function(name) {
+  return allowIf(function(req) {
+    return req.body && !req.body.hasOwnProperty(name);
+  });
+};
 
 function isAdmin(req, res, next) {
   User.findOne({id:req.user.id}).exec(function(err, user) {
@@ -80,9 +85,7 @@ module.exports.policies = {
     })],
     // we could allow add/remove character operations here, but it's so much easier to use /character
     whoami: [ 'passport' ],
-    update: [ 'passport', allowIf.isMyUser, allowIf(function(req) {
-      return req.body && !req.body.hasOwnProperty('role');
-    }) ],
+    update: [ 'passport', allowIf.isMyUser, allowIf.hasBodyWithoutField('role') ],
     '*': false
   },
   Character: {
@@ -91,7 +94,7 @@ module.exports.policies = {
     // we don't know the owner without hitting the db, and we want to optimize the
     // common/successful case and not query until after attempting to update, so
     // update validation's done in the controller.
-    update: [ 'passport', 'sessionAuth' ],
+    update: [ 'passport', 'sessionAuth', allowIf.hasBodyWithoutField('league') ],
     '*': false
   },
   Command: {

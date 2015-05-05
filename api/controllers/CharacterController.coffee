@@ -7,6 +7,7 @@ assert = require 'assert'
 module.exports =
   update: (req, res) ->
     req.checkParams('id').notEmpty().isInt()
+    req.checkParams('league').isNull()
     if (errors=req.validationErrors())
       return res.status(400).json errors:errors
     Character.update {id:req.params.id, user:req.user.id}, req.body

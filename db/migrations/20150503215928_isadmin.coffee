@@ -8,4 +8,5 @@ DEFAULT 'user';
 """
 
 exports.down = (knex, Promise) ->
-  knex.dropColumn 'user', 'role'
+  knex.schema.table 'user', (table) ->
+    table.dropColumn 'role'

@@ -35,48 +35,8 @@ module.exports =
     state = req.body.state
     commandBody = req.body.body
     sails.log.debug 'start command create', req.body
-    # TODO derive state from command and previous-state
-    # No transaction support? Seriously???
-    Character.update {id: charId, user:req.user.id}, state: state
-    .exec withErrorHandler res, 'update character', (err, characters) ->
-      assert characters.length <= 1, 'multiple characters updated?!'
-      if characters.length == 1
-        # Don't write the command log for now - hits the db too hard.
-        return res.json {command: {}}
-        # No transaction support? Seriously???
-        # No transaction support means that, if this fails, character state
-        # will be updated but the command that updated it won't exist.
-        #Command.create {character:charId, body:commandBody}
-        #.exec withErrorHandler res, 'create command', (err, command) ->
-        #  #return res.json {command: command.id, state: characters[0].state}
-        #  return res.json {command: {id:command.id}}
-
-      else
-        # character update updated nothing. extra query to determine why: does the character not exist, or is it not ours?
-        sails.log.debug 'command create/character update fail. determining why. char:', charId
-        Character.findOne {id:charId}
-        .exec withErrorHandler res, 'zero-update query', (err, character) ->
-          if character
-            sails.log.debug 'command create fail 403'
-            return res.status(403).json error:"That's not your character"
-          sails.log.debug 'command create fail 404'
-          return res.status(404).json error:"That character doesn't exist"
-
-#    # No transaction support? Seriously???
-#    query = """
-#BEGIN;
-#
-#UPDATE character SET state = $1
-#WHERE id = $2 AND user = $3;
-#
-#INSERT INTO command (character, body)
-#(SELECT $2, $4 FROM character
-#JOIN user ON id=$2 AND user=$3
-#LIMIT 1);
-#
-#COMMIT;
-#"""
-#    Command.query query, [state, charId, req.user.id, commandBody],
-#    withErrorHandler res, 'transaction', (err, result) ->
-#      return res.json {result: result, state: state}
-#      
+    # character state is not updated directly - it comes from a view now
+    Command.create {character:charId, body:commandBody, state:state}
+    .exec withErrorHandler res, 'create command', (err, command) ->
+      #return res.json {command: command.id, state: characters[0].state}
+      return res.status(201).json {command: {id:command.id}}

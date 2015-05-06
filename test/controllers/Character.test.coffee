@@ -52,7 +52,7 @@ describe 'CharacterController', ->
   it "can't create explicit ids", (done) =>
     @login.agent.post "/character/9999999"
     .send name: 'sdinaryt'
-    .expect 404, done
+    .expect 403, done
   it "can't create explicit ids (2)", (done) =>
     @login.agent.post "/character"
     .send id: 9999999, name: 'sdinaryt'
@@ -64,4 +64,8 @@ describe 'CharacterController', ->
   it "can't update self league", (done) =>
     @login.agent.post "/character/#{@login.character.id}"
     .send league: 'temp1'
-    .expect 403, done
+    .expect 400, done
+  it "can't update self user", (done) =>
+    @login.agent.post "/character/#{@login.character.id}"
+    .send user: 999
+    .expect 400, done

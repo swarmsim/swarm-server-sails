@@ -21,23 +21,51 @@ allowIf = (fn) ->
       return next()
     return res.forbidden()
 
-allowIf.isMyUser = allowIf (req) ->
-  return req.session.authenticated and "#{req.params.id}" == "#{req.user.id}"
+allowIf.isMyUser = (getter=(req) -> req.params.id) ->
+  return (req, res, next) ->
+    userid = getter req
+    if not userid
+      return res.status(400).json {error:true, message:"No user"}
+    if userid and "#{userid}" == "#{req.user.id}"
+      return next()
+    return res.status(403).json {error:true, message:"That's not your user"}
 
-allowIf.isMyCharacter = allowIf (req) ->
-  # allow a null user too. create will fail, update/delete won't change it
-  return req.session.authenticated && (!req.body.hasOwnProperty('user') || req.body.user == req.user.id)
+refreshSessionCharacters = (req, next) ->
+  Character.find user:req.user.id
+  .exec (err, chars) ->
+    if err
+      return res.status(500).json({error:true, message:"Database error (refreshSessionCharacters)"})
+    req.session.characterIds = {}
+    for char in chars
+      req.session.characterIds[char.id] = true
+    console.log 'refreshchars', req.user.id, req.session.characterIds
+    next()
+
+allowIf.isMyCharacter = (getter=(req) -> req.params.id) ->
+  return (req, res, next) ->
+    charid = getter req
+    if not charid
+      return res.status(400).json {error:true, message:"No character"}
+    if req.session.characterIds?[charid]
+      return next()
+    # on fail, try clearing the session characterid cache. failing isn't common, so this shouldn't lag much.
+    refreshSessionCharacters req, ->
+      if req.session.characterIds[charid]
+        return next()
+      return res.status(403).json {error:true, message:"That's not your character"}
 
 allowIf.hasBodyWithoutField = (name) ->
-  return allowIf (req) ->
-    return req.body and not req.body.hasOwnProperty name
+  return (req, res, next) ->
+    if req.body and not req.body.hasOwnProperty name
+      return next()
+    return res.status(400).json {error:true, message:"Must be blank: #{name}"}
 
 isAdmin = (req, res, next) ->
   User.findOne({id:req.user.id}).exec (err, user) ->
     if (err)
       return res.status(500).json({error:true, message:"Database error (isAdmin)"})
     if (!user || user.role != 'admin')
-      return res.forbidden()
+      return res.status(403).json {error:true}
     return next()
 
 module.exports.policies =
@@ -70,21 +98,17 @@ module.exports.policies =
     ]
     # we could allow add/remove character operations here, but it's so much easier to use /character
     whoami: [ 'passport' ]
-    update: [ 'passport', allowIf.isMyUser, allowIf.hasBodyWithoutField('role') ]
+    update: [ 'passport', 'sessionAuth', allowIf.isMyUser(), allowIf.hasBodyWithoutField('role') ]
     '*': false
 
   Character:
     findOne: true
-    create: [ 'passport', allowIf.isMyCharacter ]
-    # we don't know the owner without hitting the db, and we want to optimize the
-    # common/successful case and not query until after attempting to update, so
-    # update validation's done in the controller.
-    update: [ 'passport', 'sessionAuth', allowIf.hasBodyWithoutField('league'), allowIf.hasBodyWithoutField('user') ]
+    create: [ 'passport', 'sessionAuth', allowIf.isMyUser((req) -> req.body?.user) ]
+    update: [ 'passport', 'sessionAuth', allowIf.hasBodyWithoutField('league'), allowIf.hasBodyWithoutField('user'), allowIf.isMyCharacter() ]
     '*': false
 
   Command:
-    # user->character link is validated in the operation itself, just like character.update
-    create: [ 'passport', 'sessionAuth' ]
+    create: [ 'passport', 'sessionAuth', allowIf.isMyCharacter((req) -> req.body?.character) ]
     '*': false
 
 if process.env.DISABLE_DB_OPERATIONS

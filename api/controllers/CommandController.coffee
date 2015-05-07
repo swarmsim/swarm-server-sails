@@ -21,12 +21,12 @@ module.exports =
     #
     # ...no transactions, sails? really?
     # TODO: oops - this maxes out db cpu! try again tomorrow.
-    #Command.create {character:charId, body:commandBody, state:state}
-    #.exec ErrorHandler.handleError res, 'create command', (command) ->
-    # TODO: trigger
-    sails.log.debug 'command created, starting character update', req.body
-    Character.update {id:charId}, {state:state}
-    .exec ErrorHandler.handleError res, 'create command:update character (transaction failed!)', (command) ->
-      sails.log.debug 'command character updated ', req.body
-      #return res.json {command: command.id, state: characters[0].state}
-      return res.status(201).json {command: {id:command.id}}
+    Command.create {character:charId, body:commandBody, state:state}
+    .exec ErrorHandler.handleError res, 'create command', (command) ->
+      # TODO: trigger
+      sails.log.debug 'command created, starting character update', req.body
+      Character.update {id:charId}, {state:state}
+      .exec ErrorHandler.handleError res, 'create command:update character (transaction failed!)', (command) ->
+        sails.log.debug 'command character updated ', req.body
+        #return res.json {command: command.id, state: characters[0].state}
+        return res.status(201).json {command: {id:command.id}}

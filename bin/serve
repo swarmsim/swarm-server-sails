@@ -1,4 +1,1 @@
-#!/bin/sh -eux
-cd "`dirname "$0"`/.."
-. ./bin/shared/shared.sh
-env -i `readenv secrets/local/env.sh` node_modules/forever/bin/forever -w app.js
+dev/serve

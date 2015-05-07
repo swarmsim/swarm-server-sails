@@ -38,7 +38,7 @@ refreshSessionCharacters = (req, next) ->
     req.session.characterIds = {}
     for char in chars
       req.session.characterIds[char.id] = true
-    console.log 'refreshchars', req.user.id, req.session.characterIds
+    sails.log.debug 'refreshsessionchars', req.user.id, req.session.characterIds
     next()
 
 allowIf.isMyCharacter = (getter=(req) -> req.params.id) ->

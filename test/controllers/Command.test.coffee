@@ -42,6 +42,16 @@ describe 'CommandController', ->
     .expect 403, done
 
   it "can create self", (done) =>
+    state = {baz:'quux'}
     @login.agent.post "/command/"
-    .send character:@login.character.id, body:{foo:'bar'}, state: {baz:'quux'}
-    .expect 201, done
+    .send character:@login.character.id, body:{foo:'bar'}, state: state
+    .expect 201, =>
+      Character.findOne id:@login.character.id
+      .exec (err, char) =>
+        if err then return done err
+        assert.deepEqual state, char.state
+        Command.findOne character:@login.character.id, sort: 'createdAt DESC', limit:1
+        .exec (err, cmd) =>
+          if err then return done err
+          assert.deepEqual cmd.state, state
+          done()

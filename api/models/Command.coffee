@@ -5,11 +5,16 @@
 
 module.exports =
   schema: true
+  # immutable
+  autoUpdatedAt: false
 
   attributes:
     character:
       model: 'character'
       required: true
     body:
+      type: 'json'
+      required: true
+    state:
       type: 'json'
       required: true

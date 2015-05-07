@@ -55,7 +55,6 @@ select
   (select count(*) from "character" where "updatedAt" >= NOW() - '1 day'::INTERVAL) as characters_updated_24h,
   (select count(*) from "command") as command_count,
   (select count(*) from "command" where "createdAt" >= NOW() - '1 day'::INTERVAL) as commands_created_24h,
-  (select count(*) from "command" where "updatedAt" >= NOW() - '1 day'::INTERVAL) as commands_updated_24h,
   -- TODO: non-guest user count, users-with-no-characters count
 
   (select count(*) from "user" where role='admin') as admin_user_count,

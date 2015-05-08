@@ -1,0 +1,4 @@
+#!/bin/sh -eux
+cd "`dirname "$0"`/../.."
+. ./bin/shared/shared.sh
+time eb setenv -e beta `readenv secrets/beta/env.sh`

@@ -1,0 +1,5 @@
+#!/bin/sh -eu
+cd "`dirname "$0"`/../.."
+. ./bin/shared/shared.sh
+exportenv secrets/beta/env.sh secrets/beta/env_postgres_admin.sh
+SAILS_MIGRATIONS=1 sails-migrations "$@"

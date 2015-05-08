@@ -1,0 +1,4 @@
+#!/bin/sh -eux
+cd "`dirname "$0"`/../.."
+. ./bin/shared/shared.sh
+env -i `readenv secrets/beta/env.sh` PORT=1337 node_modules/forever/bin/forever -w app.js

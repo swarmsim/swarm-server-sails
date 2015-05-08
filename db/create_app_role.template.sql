@@ -38,5 +38,9 @@ from $POSTGRES_USER;
 grant select, insert, update
 (username, email, id, "createdAt", "updatedAt") on "user"
 to $POSTGRES_USER;
+-- command is append-only
+revoke update
+on "command"
+from $POSTGRES_USER;
 
 commit transaction;

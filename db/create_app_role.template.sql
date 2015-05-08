@@ -36,7 +36,7 @@ from $POSTGRES_USER;
 --    AND table_name   = 'user'
 --    AND column_name != 'role')
 grant select, insert, update
-(username, email, id, "createdAt", "updatedAt") on "user"
+(username, email, id, options, "createdAt", "updatedAt") on "user"
 to $POSTGRES_USER;
 -- command is append-only
 revoke update

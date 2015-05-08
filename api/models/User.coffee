@@ -30,3 +30,4 @@ module.exports =
     options:
       type: 'json'
       required: true
+      defaultsTo: {}

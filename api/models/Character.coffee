@@ -38,3 +38,6 @@ module.exports =
     #commands:
     #  collection: 'command'
     #  via: 'character'
+    options:
+      type: 'json'
+      required: true

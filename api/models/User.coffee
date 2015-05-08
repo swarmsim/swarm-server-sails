@@ -27,3 +27,6 @@ module.exports =
       size: 20
       defaultsTo: 'user'
       required: true
+    options:
+      type: 'json'
+      required: true

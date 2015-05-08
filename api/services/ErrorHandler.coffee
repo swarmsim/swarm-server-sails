@@ -5,7 +5,7 @@ exports.handleError = (res, stepName, next) ->
     if err
       # errorId correlates log messages to the user-visible error.
       errorId = shortid.generate()
-      sails.log.error 'command create failed', errorId: errorId, stepName: stepName, message: err
+      sails.log.error '500 error', errorId: errorId, stepName: stepName, message: err
       return res.status(500).json error:"database error: #{stepName}. error id '#{errorId}'"
     else
       # no error.

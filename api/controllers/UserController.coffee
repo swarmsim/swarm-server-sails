@@ -8,20 +8,16 @@ module.exports =
     res.view 'homepage'
   whoami: (req, res) ->
     if not req.user?.id?
-      return res.status(404).json {}
+      return res.notFound()
     sails.log.debug req.user
     User.findOne(req.user.id).populate('characters', deleted: false, sort: 'updatedAt DESC').exec (err, user) ->
-      if err
-        sails.log.error 'whoami failed', err
-        return res.status(500).json error:true, message: "Database error"
+      if err then return res.serverError err
       if not user
-        return res.status(404).json {}
-      return res.json user
+        return res.notFound()
+      return res.ok user
   findOne: (req, res) ->
     User.findOne(req.params.id).populate('characters', deleted: false, sort: 'updatedAt DESC').exec (err, user) ->
-      if err
-        sails.log.error 'get user failed', err
-        return res.status(500).json error:true, message: "Database error"
+      if err then return res.serverError err
       if not user
-        return res.status(404).json {}
-      return res.json user
+        return res.notFound()
+      return res.ok user

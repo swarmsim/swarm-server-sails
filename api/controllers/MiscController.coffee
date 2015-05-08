@@ -14,8 +14,8 @@ module.exports =
     # confirmed we're using a non-ssl db connection - oh no!
     # A non-successful status here will automatically remove this host from the load balancer, so it won't serve real users.
     if ssl_is_used? and !ssl_is_used
-      res.status(500).json ok: false, error: 'db connection is not using ssl'
-    res.json ok: '大丈夫。'
+      return res.serverError 'db connection is not using ssl'
+    return res.ok ok: '大丈夫。'
 
   about: (req, res) ->
     now = new Date()
@@ -36,9 +36,7 @@ module.exports =
       # Any model works here, nothing special about user.
       # http://stackoverflow.com/questions/18347634/is-there-a-way-for-sails-js-to-select-fields-in-sql-queries
       User.query 'select ssl_is_used();', (err, results) ->
-        if err
-          sails.log.error 'error selecting ssl_is_used() from db', err
-          return res.status(500).json error: 'database error'
+        if err then return res.serverError err
         ssl_is_used = results.rows?[0]?.ssl_is_used ? null
         sails.log.debug 'db ssl_is_used()', ssl_is_used#, results
         return next()
@@ -60,7 +58,7 @@ select
   (select count(*) from "user" where role='admin') as admin_user_count,
   '' as eol;
 """, (err, results) =>
-      if err or results?.rowCount != 1
-        sails.log.error 'error selecting admin stats from db', err, results?.rowCount
-        return res.status(500).json error:true, message:"Database error"
-      return res.json results.rows[0]
+      if err then return res.serverError err
+      if results?.rowCount != 1
+        return res.serverError "/admin unexpected results.rowCount: expected 1, got #{results?.rowCount}"
+      return res.ok results.rows[0]

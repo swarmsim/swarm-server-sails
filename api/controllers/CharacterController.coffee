@@ -3,24 +3,24 @@
  # @description :: Server-side logic for managing characters
  # @help        :: See http://links.sailsjs.org/docs/controllers
 
-assert = require 'assert'
 module.exports =
   update: (req, res) ->
     req.checkParams('id').notEmpty().isInt()
     req.checkParams('league').isNull()
     if (errors=req.validationErrors())
-      return res.status(400).json errors:errors
+      return res.badRequest errors
     Character.update {id:req.params.id, user:req.user.id}, req.body
     .exec (err, characters) ->
-      if err then return res.status(500).json error:err
-      assert characters.length <= 1, 'multiple characters updated?!'
+      if err then return res.serverError err
+      if characters.length > 1
+        return res.serverError "Multiple characters updated! Expected rowcount 1, got #{characters.length}"
       if characters.length == 1
         # success! common case.
-        return res.json characters[0]
+        return res.ok characters[0]
       # failure. extra query to determine the error: does the character not exist, or is it not ours?
       Character.findOne {id:req.params.id}
       .exec (err, character) ->
-        if err then return res.status(500).json error:err
+        if err then return res.serverError err
         if character
-          return res.status(403).json error:"That's not your character"
-        return res.status(404).json error:"That character doesn't exist"
+          return res.forbidden "That's not your character"
+        return res.notFound "That character doesn't exist"

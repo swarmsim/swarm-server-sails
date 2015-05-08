@@ -9,7 +9,7 @@ module.exports =
     req.checkBody('state').notEmpty()
     req.checkBody('body').notEmpty()
     if (errors=req.validationErrors())
-      return res.status(400).json errors:errors
+      return res.badRequest errors
     charId = req.body.character
     state = req.body.state
     commandBody = req.body.body
@@ -22,11 +22,13 @@ module.exports =
     # ...no transactions, sails? really?
     # TODO: oops - this maxes out db cpu! try again tomorrow.
     Command.create {character:charId, body:commandBody, state:state}
-    .exec ErrorHandler.handleError res, 'create command', (command) ->
+    .exec (err, command) ->
+      if err then return res.serverError err
       # TODO: trigger
       sails.log.debug 'command created, starting character update', req.body
       Character.update {id:charId}, {state:state}
-      .exec ErrorHandler.handleError res, 'create command:update character (transaction failed!)', (command) ->
+      .exec (err, command) ->
+        if err then return res.serverError err
         sails.log.debug 'command character updated ', req.body
         #return res.json {command: command.id, state: characters[0].state}
-        return res.status(201).json {command: {id:command.id}}
+        return res.okCreated {command: {id:command.id}}

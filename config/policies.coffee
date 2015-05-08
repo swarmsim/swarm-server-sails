@@ -25,16 +25,15 @@ allowIf.isMyUser = (getter=(req) -> req.params.id) ->
   return (req, res, next) ->
     userid = getter req
     if not userid
-      return res.status(400).json {error:true, message:"No user"}
+      return res.badRequest "No user"
     if userid and "#{userid}" == "#{req.user.id}"
       return next()
-    return res.status(403).json {error:true, message:"That's not your user"}
+    return res.forbidden "That's not your user"
 
 refreshSessionCharacters = (req, next) ->
   Character.find user:req.user.id
   .exec (err, chars) ->
-    if err
-      return res.status(500).json({error:true, message:"Database error (refreshSessionCharacters)"})
+    if err then return res.serverError err
     req.session.characterIds = {}
     for char in chars
       req.session.characterIds[char.id] = true
@@ -45,27 +44,26 @@ allowIf.isMyCharacter = (getter=(req) -> req.params.id) ->
   return (req, res, next) ->
     charid = getter req
     if not charid
-      return res.status(400).json {error:true, message:"No character"}
+      return res.badRequest "No character"
     if req.session.characterIds?[charid]
       return next()
     # on fail, try clearing the session characterid cache. failing isn't common, so this shouldn't lag much.
     refreshSessionCharacters req, ->
       if req.session.characterIds[charid]
         return next()
-      return res.status(403).json {error:true, message:"That's not your character"}
+      return res.forbidden "That's not your character"
 
 allowIf.hasBodyWithoutField = (name) ->
   return (req, res, next) ->
     if req.body and not req.body.hasOwnProperty name
       return next()
-    return res.status(400).json {error:true, message:"Must be blank: #{name}"}
+    return res.badRequest "Must be blank: #{name}"
 
 isAdmin = (req, res, next) ->
   User.findOne({id:req.user.id}).exec (err, user) ->
-    if (err)
-      return res.status(500).json({error:true, message:"Database error (isAdmin)"})
+    if err then return res.serverError err
     if (!user || user.role != 'admin')
-      return res.status(403).json {error:true}
+      return res.forbidden 'Not an admin'
     return next()
 
 module.exports.policies =

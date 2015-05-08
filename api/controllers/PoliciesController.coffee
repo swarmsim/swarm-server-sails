@@ -81,7 +81,7 @@ module.exports =
     req.checkBody('policy.user_id').notEmpty().isInt()
     req.checkBody('policy.game_auth_token').notEmpty()
     if (errors=req.validationErrors())
-      return res.status(400).json errors:errors
+      return res.badRequest errors
     policy = req.body.policy
     kong_args = {user_id:policy.user_id, game_auth_token:policy.game_auth_token, api_key:SECRETS.KONGREGATE_API_KEY}
     kong_url = "https://api.kongregate.com/api/authenticate.json?#{querystring.stringify kong_args}"
@@ -135,8 +135,8 @@ module.exports =
             expires: expires_date.valueOf()
           res.json ret
         else # !kongjson.success; invalid user
-          res.status if (400 <= kongjson.error < 500) then 400 else 500
-          res.json kongjson
-          return
+          if 400 <= kongjson.error < 500
+            return res.badRequest kongjson
+          return res.serverError kongjson
     .on 'error', (e) ->
       sails.log.error 'kongregate-auth error', e

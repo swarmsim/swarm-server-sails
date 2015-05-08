@@ -42,7 +42,7 @@ module.exports.cors =
 https://www.swarmsim.com
 https://preprod.swarmsim.com
 https://staging.swarmsim.com
-https://publictest.swarmsim.com
+https://beta.swarmsim.com
 https://swarmsim.github.io
 http://kormac.swarmsim.com:9000
 http://192.168.137.142:9000

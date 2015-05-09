@@ -38,7 +38,8 @@
     "sails-postgresql": "^0.10.14",
     "shortid": "^2.2.2",
     "swarm-shared": "git://github.com/swarmsim/swarm-shared.git#master",
-    "validator": "^3.37.0"
+    "validator": "^3.37.0",
+    "winston": "^1.0.0"
   },
   "scripts": {
     "start": "forever app.js",

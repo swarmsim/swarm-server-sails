@@ -20,8 +20,8 @@ module.exports =
     # This is really really write-heavy - might optimize later to join character-state from commands; slower reads for faster writes.
     #
     # ...no transactions, sails? really?
-    # TODO: oops - this maxes out db cpu! try again tomorrow.
-    Command.create {character:charId, body:commandBody, state:state}
+    # TODO: logging state with every command consumes a lot of disk space. Add random sampling.
+    Command.create {character:charId, body:commandBody, state:{}}
     .exec (err, command) ->
       if err then return res.serverError err
       # TODO: trigger
@@ -30,5 +30,4 @@ module.exports =
       .exec (err, command) ->
         if err then return res.serverError err
         sails.log.debug 'command character updated ', req.body
-        #return res.json {command: command.id, state: characters[0].state}
         return res.okCreated {command: {id:command.id}}

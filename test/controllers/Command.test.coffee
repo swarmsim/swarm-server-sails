@@ -43,15 +43,18 @@ describe 'CommandController', ->
 
   it "can create self", (done) =>
     state = {baz:'quux'}
+    origcharstate = @login.character.state
     @login.agent.post "/command/"
     .send character:@login.character.id, body:{foo:'bar'}, state: state
     .expect 201, =>
       Character.findOne id:@login.character.id
       .exec (err, char) =>
         if err then return done err
-        assert.deepEqual state, char.state
+        assert.deepEqual char.state, state
         Command.findOne character:@login.character.id, sort: 'createdAt DESC', limit:1
         .exec (err, cmd) =>
           if err then return done err
-          assert.deepEqual cmd.state, state
+          # State storage disabled. #663
+          #assert.deepEqual cmd.state, state
+          assert.deepEqual cmd.state, {}
           done()
